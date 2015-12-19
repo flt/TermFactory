@@ -239,7 +239,6 @@ public class NCBOUtils {
             try {
 				System.out.println(writer.writeValueAsString(result));
 			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }

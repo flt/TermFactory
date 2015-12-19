@@ -14,7 +14,6 @@ public class SourceInfo {
 	public SourceInfo(String sourceName, String sourceCode){
 		this.sourceCode = sourceCode;
 		this.sourceName = sourceName;
-		//this.updateTime = new Date();
 	}
 	
 	public String getSourceName() {
@@ -27,6 +26,15 @@ public class SourceInfo {
 	public String getSourceCode() {
 		return sourceCode;
 	}
+	
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
 	public void setSourceCode(String sourceCode) {
 		this.sourceCode = sourceCode;
 		this.updateTime = new Date();
@@ -55,7 +63,6 @@ public class SourceInfo {
 	}
 	
 	public static SourceInfo JsonToTerm(String jsonString){
-		SourceInfo curSource;
 		Gson gson = new Gson();
 		SourceInfo obj = gson.fromJson(jsonString, SourceInfo.class);
 		return obj;

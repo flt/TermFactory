@@ -13,19 +13,18 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.memetix.mst.language.Language;
 import com.memetix.mst.translate.Translate;
 
+@SuppressWarnings("deprecation")
 public class microsoftTranslator {
 	//6c5ef88f-635d-4e5e-91d6-bbe0d78484e5
 	static final String CLIENT_ID = "TermFactory";
@@ -68,8 +67,9 @@ public class microsoftTranslator {
         //translatedText = getTranslation(Arrays.asList("gene expression ontology"));  
         //System.out.println(translatedText.toString());  
     	String result = translate("current procedure terminology");
+    	System.out.println(result);
     }
-    public static String translate(String text) throws IOException {
+	public static String translate(String text) throws IOException {
         try {
             // Construct content
             String content = "grant_type=client_credentials";
@@ -99,8 +99,6 @@ public class microsoftTranslator {
             // Get response data.
             DataInputStream input = new DataInputStream(conn.getInputStream());
             String str = "";
-            int start = 0;
-            int end = 0;
             String accessToken = "";
             while (null != ((str = input.readLine()))) {
                 System.out.println(str);
@@ -112,7 +110,8 @@ public class microsoftTranslator {
             input.close();
 
             //Call Microsoft Translate
-            HttpClient httpclient = new DefaultHttpClient();
+            @SuppressWarnings("resource")
+			HttpClient httpclient = new DefaultHttpClient();
             String urlStr = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=" + URLEncoder.encode(text) + "&from=en&to=zh";
             urlStr = urlStr + "&appId=" + URLEncoder.encode("Bearer "+accessToken);
             HttpGet httpGet = new HttpGet(urlStr);

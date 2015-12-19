@@ -55,7 +55,7 @@ public class ExtractWord {
         //使用默认的停用词表
         Map<String, List> map = getStopWordList.ansjStopWord();
         String word = "Maven是基于项目对象模型(POM)，可以通过一小段描述信息来管理项目的构建，报告和文档的软件项目管理工具。Maven 除了以程序构建能力为特色之外，还提供高级项目管理工具。";
-        String enword = "Sodium ironedetate Oral Solution";
+        //String enword = "Sodium ironedetate Oral Solution";
         List<String> list = extractWord.extracWord(word, map);
          
         for (String str : list) {

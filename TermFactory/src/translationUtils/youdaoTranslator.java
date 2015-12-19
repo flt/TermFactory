@@ -8,9 +8,6 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,14 +21,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+@SuppressWarnings("deprecation")
 public class youdaoTranslator {
 	static final String APIKey = "1618896162";
 	static final String keyFrom = "TermFactory";
 	
 	public static void main(String[] args){
 		String Chinese = getTranslation("Arthroscopy");
+		System.out.print(Chinese);
 	}
 	public static String getTranslation(String text){
+		@SuppressWarnings("resource")
 		HttpClient httpclient = new DefaultHttpClient();
         String urlStr = "http://fanyi.youdao.com/openapi.do?keyfrom=" + keyFrom + "&key=" + APIKey + "&type=data&doctype=json&version=1.1&q=" + URLEncoder.encode(text);
         HttpGet httpGet = new HttpGet(urlStr);
@@ -76,10 +76,10 @@ public class youdaoTranslator {
                 return rawResult;
             }
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
         

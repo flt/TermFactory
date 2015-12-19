@@ -1,6 +1,5 @@
 package utils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,11 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import DAOimpl.LocalTermDaoImpl;
 import DBConnection.MongoDBJDBC;
 import HttpConnection.NCBOUtils.NCBOUtils;
-import model.LocalTerm;
-import model.SourceInfo;
-import model.TransInfo;
 import model.bioPortalSource;
-import translationUtils.microsoftTranslator;
 
 public class controller {
 	public static MongoDBJDBC database;

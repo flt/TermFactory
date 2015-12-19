@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 public class LocalTerm {
 	private String name_en = null;
@@ -173,7 +172,7 @@ public class LocalTerm {
 		return documentString;
 	}
 	
-	public static LocalTerm LocalTerm(String json){
+	public static LocalTerm getLocalTermFromJson(String json){
 		Gson gson = new Gson();
 		LocalTerm element = gson.fromJson(json, LocalTerm.class);
 		return element;
