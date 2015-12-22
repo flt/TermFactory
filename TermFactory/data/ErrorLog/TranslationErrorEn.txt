@@ -31,3 +31,24 @@
 ~~~~~Wrong document:{"name_en":""Dermoid" tumor"}
 ~~~~~Wrong document:{"name_en":"Initial patient "call""}
 ~~~~~Wrong document:{"name_en":"Encounter for "check-up""}
+~~~~~Wrong document:{"name_en":"Drug not collected - "too expensive""}
+~~~~~Wrong document:{"name_en":"Baby miscellaneous "at-risk" factors"}
+~~~~~Wrong document:{"name_en":"Second patient "call""}
+~~~~~Wrong document:{"name_en":""Section" examination - approved doctor"}
+~~~~~Wrong document:{"name_en":"Responds to "no" by briefly stopping activity"}
+~~~~~Wrong document:{"name_en":"Deleted from recall-"ghost""}
+~~~~~Wrong document:{"name_en":"Patient registration-"ghosts""}
+~~~~~Wrong document:{"name_en":""Cleans" own needles"}
+~~~~~Wrong document:{"name_en":"Has "spasms""}
+~~~~~Wrong document:{"name_en":"Third patient "call""}
+~~~~~Wrong document:{"name_en":"Does not "clean" needles"}
+~~~~~Wrong document:{"name_en":"Primary "polygenic" combined hyperlipidemia"}
+~~~~~Wrong document:{"name_en":""Section" examination - patient's GP"}
+~~~~~Wrong document:{"name_en":"Patient "called" - prevention"}
+~~~~~Wrong document:{"name_en":""Section" examination - social worker"}
+~~~~~Wrong document:{"name_en":"C/O - "tired all the time""}
+~~~~~Wrong document:{"name_en":"Arsenic-induced "rain-drop" hypomelanosis"}
+~~~~~Wrong document:{"name_en":"Retinal "U" tear"}
+~~~~~Wrong document:{"name_en":""Dermoid" tumor"}
+~~~~~Wrong document:{"name_en":"Initial patient "call""}
+~~~~~Wrong document:{"name_en":"Encounter for "check-up""}
