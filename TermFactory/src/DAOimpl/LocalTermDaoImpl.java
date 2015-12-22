@@ -7,6 +7,7 @@ import java.util.List;
 import org.bson.Document;
 
 import com.mongodb.Block;
+import com.mongodb.MongoCursorNotFoundException;
 import com.mongodb.client.FindIterable;
 
 import DAO.LocalTermDao;
@@ -76,28 +77,37 @@ public class LocalTermDaoImpl extends commonDaoImpl implements LocalTermDao{
 		String query = "{\"source.sourceCode\":\"" + queryString.getSource().get(0).getSourceCode() +"\"}";
 		return mongoClient.updateData(CollectionName, query, "name_zh", zh);
 	}
-	public void translateMix(String CollectionName){
+	public int translateMix(String CollectionName){
 		mongoClient = MongoDBJDBC.getInstance();
 		//System.out.println(mongoClient.toString());
 		FindIterable<Document> iterable;
 		//iterable = mongoClient.selectAllDocument(CollectionName);
 		iterable = mongoClient.iterateDocument(CollectionName, "{\"name_zh\":null}");
-		iterable.forEach(new Block<Document>(){
-			@Override
-			public void apply(final Document document){
-				String source = document.getString("name_en");
-				List<String> stringList = mongoClient.searchData("TranslationLog", "{\"name_en\":\""+source+"\"}");
-				if (stringList == null)
-					return;
-				String termString = stringList.get(0);
-				for(int i = 1; i < stringList.size(); i++){
-					mongoClient.deleteData("TranslationLog", stringList.get(i));
+		try{
+			iterable.forEach(new Block<Document>(){
+				@Override
+				public void apply(final Document document){
+					String source = document.getString("name_en");
+					List<String> stringList = mongoClient.searchData("TranslationLog", "{\"name_en\":\""+source+"\"}");
+					if (stringList == null)
+						return;
+					String termString = stringList.get(0);
+					for(int i = 1; i < stringList.size(); i++){
+						mongoClient.deleteData("TranslationLog", stringList.get(i));
+					}
+					//System.out.println(termString);
+					String zh = TransInfo.LocalTerm(termString).getName_zh();
+					mongoClient.updateData(CollectionName, "{\"name_en\":\""+source+"\"}", "name_zh", zh);
 				}
-				//System.out.println(termString);
-				String zh = TransInfo.LocalTerm(termString).getName_zh();
-				mongoClient.updateData(CollectionName, "{\"name_en\":\""+source+"\"}", "name_zh", zh);
-			}
-		});
+			});
+		}catch(MongoCursorNotFoundException mce){
+			System.out.println("Too long ! out of Cursor!!!");
+			return -1;
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			return -1;
+		}
+		return 0;
 	}
 	public void getStemZhBatch(String CollectionName){
 		

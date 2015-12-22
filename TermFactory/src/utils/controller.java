@@ -91,8 +91,10 @@ public class controller {
 		//ltdi.updateZHBatch("ICDChineseInfo", null);
 		//String termString = database.searchData("TranslationLog", "{\"name_en\":\"Drug not collected - \"too expensive\"}").get(0);
 		//System.out.println(termString);
-		
-		ltdi.translateMix("SNOMEDCT");
+		int result = -1;
+		while(result == -1){
+			result = ltdi.translateMix("SNOMEDCT");
+		}
 		//ltdi.translateMix("CPT");
 
 		//ltdi.translateMix("LOINC");
