@@ -3,6 +3,8 @@ package DBConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.LocalTerm;
+
 import org.bson.Document;
 import org.bson.json.JsonParseException;
 
@@ -78,6 +80,17 @@ public class MongoDBJDBC {
 		FindIterable<Document> iterable = db.getCollection(collectionName).find(queryCondition);
 		return iterable;
 	}
+	//FindIterable<Document> iterable = db.getCollection("restaurants").find(new Document("$or", asList(new Document("cuisine", "Italian"),new Document("address.zipcode", "10075"))));
+	public FindIterable<Document> iterateLogicalDocument(String collectionName, List<String> DocumentList, String LogicalName){
+		List<Document> queryConditions = new ArrayList<Document>();
+		for(String condition: DocumentList){
+			queryConditions.add(Document.parse(condition));
+		}
+		Document queryDocument = new Document("\""+ LogicalName + "\"", queryConditions);
+		//System.out.println(queryDocument.toJson());
+		FindIterable<Document> iterable = db.getCollection(collectionName).find(queryDocument);
+		return iterable;
+	}
 	
 	public FindIterable<Document> writeAllDocument(String collectionName){
 		FindIterable<Document> iterable = db.getCollection(collectionName).find();
@@ -85,18 +98,13 @@ public class MongoDBJDBC {
 		iterable.forEach(new Block<Document>(){
 			@Override
 			public void apply(final Document document){
-				System.out.println(document);
+				//System.out.println(document);
 				String line = document.get("name_en").toString() + "@@$$@@";
 				String sourceInfo = document.get("source").toString().split("=|,")[3];
-				System.out.println(sourceInfo);
+				//System.out.println(sourceInfo);
 				line += sourceInfo;
-				System.out.println(line);
+				//System.out.println(line);
 				toWrite.add(line + "\n");
-				//if(toWrite.size() >= 1000){
-					//TxtOperation.writeToFile("data/"+collectionName+".txt", toWrite, "append");
-					//toWrite.clear();
-					//System.out.println("Over 1000");
-				//}
 			}
 		});
 		TxtOperation.writeToFile("data/"+collectionName+".txt", toWrite, "append");
@@ -125,13 +133,35 @@ public class MongoDBJDBC {
 		return flag;
 	}
 	
-	public boolean updateData(String collectionName, String conditionDocumentString, String key, String value){
+	/*public boolean updateData(String collectionName, String conditionDocumentString, String key, List<String> value){
 		boolean flag = true;
-		UpdateResult ur = db.getCollection(collectionName).updateOne(Document.parse(conditionDocumentString), new Document("$set", new Document(key, value)));
+		UpdateResult ur = db.getCollection(collectionName).updateMany(Document.parse(conditionDocumentString), new Document("$set", new Document(key, value)));
 		if(ur.getModifiedCount() >= 1)
 			flag = true;
 		else
 			flag = false;
+		return flag;
+	}*/
+	
+	public boolean updateData(String collectionName, String conditionDocumentString, String key, Object value){
+		boolean flag = true;
+		//System.out.println(conditionDocumentString);
+		/*conditionDocumentString = "{\"name_en\" : \"Lower plate of the cochlear spiral lamina\",\"name_zh\" : \"耳蜗螺旋板的下盘\"}";
+		System.out.println(conditionDocumentString);
+		LocalTerm lt = new LocalTerm("Lower plate of the cochlear spiral lamina","耳蜗螺旋板的下盘");
+		conditionDocumentString = lt.TermToJson();
+		System.out.println(conditionDocumentString);
+		System.out.println(Document.parse(conditionDocumentString).toJson());
+		*/
+		UpdateResult ur = db.getCollection(collectionName).updateMany(Document.parse(conditionDocumentString), new Document("$set", new Document(key, value)));
+		if(ur.getModifiedCount() >= 1){
+			flag = true;
+			System.out.println(ur.getMatchedCount());
+		}
+		else{
+			flag = false;
+			System.out.println(new Document("$set", new Document(key, value)).toJson());
+		}
 		return flag;
 	}
 	

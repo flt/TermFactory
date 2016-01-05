@@ -5,21 +5,30 @@ import java.util.Date;
 import com.google.gson.Gson;
 
 public class TransInfo {
-	private String name_en;
-	private String name_zh;
-	private String source;
-	private Date updatedtime;
+	private String name_en = null;
+	private String name_zh = null;
+	private String source = null;
+	private Date updatedtime = null;
+	
+	public static void main(String[] args){
+		TransInfo t = new TransInfo();
+		t.setName_en("test \"Chinese\"");
+		System.out.println(t.TermToJson());
+	}
+	
     public TransInfo(String name_en, String name_zh, String source){
 		this.name_en = name_en;
 		this.name_zh = name_zh;
 		this.source = source;
 	}
+    public TransInfo(){
+    	
+    }
     
     public String TermToJson(){
 		String documentString = "";
 		Gson gson = new Gson();
 		documentString = gson.toJson(this);
-		System.out.println(documentString);
 		return documentString;
 	}
     

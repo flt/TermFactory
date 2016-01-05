@@ -27,7 +27,7 @@ public class youdaoTranslator {
 	static final String keyFrom = "TermFactory";
 	
 	public static void main(String[] args){
-		String Chinese = getTranslation("Arthroscopy");
+		String Chinese = getTranslation("Hospital outpatient facility or clinic");
 		System.out.print(Chinese);
 	}
 	public static String getTranslation(String text){

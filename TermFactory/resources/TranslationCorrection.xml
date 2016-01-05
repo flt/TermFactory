@@ -1,0 +1,10 @@
+<Translation>
+	<from lang="en" value="acquired"></from>
+	<wrong lang="zh" value="得到的"></wrong>
+	<to lang="zh" value="获得性的"></to>
+</Translation>
+<Translation>
+	<from lang="en" value="tablet"></from>
+	<wrong lang="zh" value="平板电脑"></wrong>
+	<to lang="zh" value="药片"></to>
+</Translation>

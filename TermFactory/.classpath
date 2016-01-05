@@ -2,34 +2,34 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_66"/>
-	<classpathentry kind="lib" path="lib/NCBO/jackson-annotations-2.1.4.jar"/>
-	<classpathentry kind="lib" path="lib/NCBO/jackson-core-2.1.4.jar"/>
-	<classpathentry kind="lib" path="lib/NCBO/jackson-databind-2.1.4.jar"/>
-	<classpathentry kind="lib" path="lib/MongoDB/mongo-java-driver-3.2.0-rc0-javadoc.jar"/>
-	<classpathentry kind="lib" path="lib/MongoDB/mongo-java-driver-3.2.0-rc0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/MongoDB/mongo-java-driver-3.2.0-rc0.jar"/>
-	<classpathentry kind="lib" path="lib/GSON/gson-2.5-javadoc.jar"/>
-	<classpathentry kind="lib" path="lib/GSON/gson-2.5-sources.jar"/>
-	<classpathentry kind="lib" path="lib/GSON/gson-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/jna-4.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache.httpcomponents.httpclient_4.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache.httpcomponents.httpcore_4.4.4.jar"/>
 	<classpathentry kind="lib" path="lib/Excel/poi-3.13-20150929.jar"/>
 	<classpathentry kind="lib" path="lib/Excel/poi-examples-3.13-20150929.jar"/>
 	<classpathentry kind="lib" path="lib/Excel/poi-excelant-3.13-20150929.jar"/>
 	<classpathentry kind="lib" path="lib/Excel/poi-ooxml-3.13-20150929.jar"/>
 	<classpathentry kind="lib" path="lib/Excel/poi-ooxml-schemas-3.13-20150929.jar"/>
 	<classpathentry kind="lib" path="lib/Excel/poi-scratchpad-3.13-20150929.jar"/>
+	<classpathentry kind="lib" path="lib/GSON/gson-2.5-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/GSON/gson-2.5-sources.jar"/>
+	<classpathentry kind="lib" path="lib/GSON/gson-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/MicrosoftTranslator/microsoft-translator-java-api-0.6.2-jar-with-dependencies.jar"/>
-	<classpathentry kind="lib" path="lib/org.apache.httpcomponents.httpclient_4.5.1.jar"/>
-	<classpathentry kind="lib" path="lib/org.apache.httpcomponents.httpcore_4.4.4.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.2-javadoc.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/MongoDB/mongo-java-driver-3.2.0-rc0-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/MongoDB/mongo-java-driver-3.2.0-rc0-sources.jar"/>
+	<classpathentry kind="lib" path="lib/MongoDB/mongo-java-driver-3.2.0-rc0.jar"/>
+	<classpathentry kind="lib" path="lib/NCBO/jackson-annotations-2.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/NCBO/jackson-core-2.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/NCBO/jackson-databind-2.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/NLP/ansj_seg-3.0.jar"/>
-	<classpathentry kind="lib" path="lib/NLP/tree_split-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/NLP/elasticsearch-sql-1.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/NLP/nlp-lang-1.0.2.jar"/>
-	<classpathentry kind="lib" path="lib/jna-4.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/NLP/stanford-corenlp-3.5.2-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/NLP/stanford-corenlp-3.5.2-models.jar"/>
 	<classpathentry kind="lib" path="lib/NLP/stanford-corenlp-3.5.2-sources.jar"/>
 	<classpathentry kind="lib" path="lib/NLP/stanford-corenlp-3.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/NLP/tree_split-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

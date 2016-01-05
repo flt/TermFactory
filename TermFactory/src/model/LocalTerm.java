@@ -18,7 +18,16 @@ public class LocalTerm {
 	private List<String> subList = null;
 	private List<String> synonym = null;
 	private String cui = null;
+	private String _id = null;
 	
+	public String get_id() {
+		return _id;
+	}
+
+	public void set_id(String _id) {
+		this._id = _id;
+	}
+
 	public List<String> getSynonym() {
 		return synonym;
 	}

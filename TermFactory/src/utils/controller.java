@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import DAOimpl.LocalTermDaoImpl;
 import DBConnection.MongoDBJDBC;
 import HttpConnection.NCBOUtils.NCBOUtils;
+import model.LocalTerm;
 import model.bioPortalSource;
 
 public class controller {
@@ -85,19 +86,19 @@ public class controller {
 		database = new MongoDBJDBC();
 		database.createConnection(MongoDBJDBC.getIp(), 27017, null, null);
 		LocalTermDaoImpl ltdi=new LocalTermDaoImpl();
-		//LocalTerm toUpdate = new LocalTerm();
-		//toUpdate.setSource(Arrays.asList(new SourceInfo("ICD10", "B33.3")));
+		LocalTerm toUpdate = new LocalTerm("MSH6 (mutS homolog 6 [E. coli]) (eg, hereditary non-polyposis colorectal cancer, Lynch syndrome) gene analysis; full sequence analysis", "MSH6(傻瓜同族体6(E。杆菌)(如遗传即结直肠癌,林奇综合征)基因分析;完整的序列分析");
 		//ltdi.updateZH("ICD10", toUpdate, "测试");
 		//ltdi.updateZHBatch("ICDChineseInfo", null);
 		//String termString = database.searchData("TranslationLog", "{\"name_en\":\"Drug not collected - \"too expensive\"}").get(0);
 		//System.out.println(termString);
 		int result = -1;
 		while(result == -1){
-			result = ltdi.translateMix("SNOMEDCT");
+			//result = ltdi.translateMix("SNOMEDCT");
+			//result = ltdi.translateMix("CPT");
+			//result = ltdi.translateMix("LOINC");
+			//result = ltdi.insertStemBatch("CPT");
+			result = ltdi.insertStemBatch("SNOMEDCT");
 		}
-		//ltdi.translateMix("CPT");
-
-		//ltdi.translateMix("LOINC");
 
 		//ltdi.translateMix("RXNORM");
 		//System.out.println(insertBioPortalSource());
