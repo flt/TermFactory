@@ -201,6 +201,10 @@ public class LocalTermDaoImpl extends commonDaoImpl implements LocalTermDao{
 			List<String> zhlist = null;
 			if(name_en != null){
 				enlist = trimList(extractWord.extracWord(name_en, NLPmap));
+				if(enlist == null){
+					enlist = new ArrayList<String>();
+					enlist.add(name_en);
+				}
 				boolean isenUpdated = mongoClient.updateData(CollectionName, queryString.TermToJson(), "stem_en", enlist);
 				if(!isenUpdated){
 					String toWrite = "~~~~~English:" + name_en + "\n";
@@ -213,6 +217,10 @@ public class LocalTermDaoImpl extends commonDaoImpl implements LocalTermDao{
 				
 			if(name_zh != null){
 				zhlist = trimList(extractWord.extracWord(name_zh, NLPmap));
+				if(zhlist == null){
+					zhlist = new ArrayList<String>();
+					zhlist.add(name_en);
+				}
 				boolean iszhUpdated = mongoClient.updateData(CollectionName, queryString.TermToJson(), "stem_zh", zhlist);
 				if(!iszhUpdated){
 					String toWrite = "~~~~~Chinese:" + name_zh + "\n";
