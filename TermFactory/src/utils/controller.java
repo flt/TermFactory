@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bson.Document;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 import DAOimpl.LocalTermDaoImpl;
 import DBConnection.MongoDBJDBC;
 import HttpConnection.NCBOUtils.NCBOUtils;
+import Services.LocalTermServices;
 import model.LocalTerm;
 import model.bioPortalSource;
 
@@ -22,10 +25,10 @@ public class controller {
 		for(Entry<String, String> pair:source.entrySet()){
 			String name_en = pair.getKey();
 			String name_zh = "";
-			List<String> storedChinese = database.searchData("TranslationLog", MongoDBJDBC.getDocumentString("name_en", name_en));
+			List<Document> storedChinese = database.searchData("TranslationLog", MongoDBJDBC.getDocumentString("name_en", name_en));
 			if(storedChinese != null){
-				for (String chinese : storedChinese){
-					name_zh = chinese;
+				for (Document chinese : storedChinese){
+					name_zh = chinese.getString("name_zh");
 				}
 			}
 			else{
@@ -71,7 +74,7 @@ public class controller {
 		for(JsonNode cla: classes){
 			bioPortalSource sourceinfo = new bioPortalSource(cla.get("prefLabel").asText(), null, cla.get("@id").asText(), "bioPortal");
 			//需要判断数据库中是否有数据
-			List<String> relatedResult = database.searchData(databaseName, "{\"name_en\":\"" + cla.get("prefLabel").asText() + "\"}");
+			List<Document> relatedResult = database.searchData(databaseName, "{\"name_en\":\"" + cla.get("prefLabel").asText() + "\"}");
 			if(relatedResult == null || relatedResult.size() == 0){
 				database.insertData(databaseName, sourceinfo.TermToJson());
 				System.out.println("add new term:" + sourceinfo.TermToJson());
@@ -86,21 +89,27 @@ public class controller {
 		database = new MongoDBJDBC();
 		database.createConnection(MongoDBJDBC.getIp(), 27017, null, null);
 		LocalTermDaoImpl ltdi=new LocalTermDaoImpl();
-		LocalTerm toUpdate = new LocalTerm("MSH6 (mutS homolog 6 [E. coli]) (eg, hereditary non-polyposis colorectal cancer, Lynch syndrome) gene analysis; full sequence analysis", "MSH6(傻瓜同族体6(E。杆菌)(如遗传即结直肠癌,林奇综合征)基因分析;完整的序列分析");
+		//LocalTerm toUpdate = new LocalTerm("MSH6 (mutS homolog 6 [E. coli]) (eg, hereditary non-polyposis colorectal cancer, Lynch syndrome) gene analysis; full sequence analysis", "MSH6(傻瓜同族体6(E。杆菌)(如遗传即结直肠癌,林奇综合征)基因分析;完整的序列分析");
 		//ltdi.updateZH("ICD10", toUpdate, "测试");
 		//ltdi.updateZHBatch("ICDChineseInfo", null);
 		//String termString = database.searchData("TranslationLog", "{\"name_en\":\"Drug not collected - \"too expensive\"}").get(0);
 		//System.out.println(termString);
+		/*LocalTerm lt = new LocalTerm();
+		lt.setName_en("Diagnosis");
+		
+		ltService.getSubClass(lt);*/
+		LocalTermServices ltService = new LocalTermServices();
 		int result = -1;
 		while(result == -1){
 			//result = ltdi.translateMix("SNOMEDCT");
 			//result = ltdi.translateMix("CPT");
 			//result = ltdi.translateMix("LOINC");
 			//result = ltdi.insertStemBatch("CPT");
-			result = ltdi.insertStemBatch("SNOMEDCT");
+			//ltdi.translateMix("RXNORM");
+			//ltdi.insertStemBatch("RXNORM");
+			//result = ltdi.insertStemBatch("SNOMEDCT");
+			result = ltService.getSubClass("SNOMEDCT");
 		}
-
-		//ltdi.translateMix("RXNORM");
 		//System.out.println(insertBioPortalSource());
 		//insertClasses("SNOMEDCT", "Systematized Nomenclature of Medicine - Clinical Terms");
 		//LocalTerm term = new LocalTerm("test", "测试");

@@ -3,6 +3,8 @@ package DAOimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.Document;
+
 import DBConnection.MongoDBJDBC;
 
 public class commonDaoImpl {
@@ -15,7 +17,10 @@ public class commonDaoImpl {
 		MongoDBJDBC dbClient = MongoDBJDBC.getInstance();
 		//生成DocumentString
 		String documentString = "{\"name_en\":\"" + en + "\"}";
-		zhList = dbClient.searchData(CollectionName, documentString);
+		List<Document> zhListDocs = dbClient.searchData(CollectionName, documentString);
+		for(Document zhdoc:zhListDocs){
+			zhList.add(zhdoc.getString("name_zh"));
+		}
 		System.out.println(zhList.toArray());
 		return zhList;
 	}
@@ -24,7 +29,10 @@ public class commonDaoImpl {
 		MongoDBJDBC dbClient = MongoDBJDBC.getInstance();
 		//生成DocumentString
 		String documentString = "{\"name_zh\":\"" + zh + "\"}";
-		enList = dbClient.searchData(CollectionName, documentString);
+		List<Document> enListDocs = dbClient.searchData(CollectionName, documentString);
+		for(Document endoc:enListDocs){
+			enList.add(endoc.getString("name_en"));
+		}
 		System.out.println(enList.toArray());
 		return enList;
 	}

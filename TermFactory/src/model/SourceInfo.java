@@ -34,6 +34,9 @@ public class SourceInfo {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+	public void emptyUpdateTime() {
+		this.updateTime = null;
+	}
 
 	public void setSourceCode(String sourceCode) {
 		this.sourceCode = sourceCode;

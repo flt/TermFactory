@@ -27,7 +27,7 @@ public class youdaoTranslator {
 	static final String keyFrom = "TermFactory";
 	
 	public static void main(String[] args){
-		String Chinese = getTranslation("Hospital outpatient facility or clinic");
+		String Chinese = getTranslation("Ear Normal");
 		System.out.print(Chinese);
 	}
 	public static String getTranslation(String text){
@@ -67,7 +67,7 @@ public class youdaoTranslator {
                 		//System.out.println(firstWeb);
                 		JsonObject rawResultObj = firstWeb.get(0).getAsJsonObject();
                 		rawResult = rawResultObj.get("value").getAsJsonArray().get(0).getAsString();
-                		return rawResult.trim().replace(" ", "");
+                		return rawResult.trim();
                 	}
                 }
                 if(jsonObj.get("translation") == null)

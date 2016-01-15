@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 
 import translationUtils.youdaoTranslator;
 
+import com.google.gson.Gson;
 import com.mongodb.Block;
 import com.mongodb.MongoCursorNotFoundException;
 import com.mongodb.client.FindIterable;
@@ -24,7 +25,7 @@ import model.SourceInfo;
 import model.TransInfo;
 
 public class LocalTermDaoImpl extends commonDaoImpl implements LocalTermDao{
-	private MongoDBJDBC mongoClient;
+	private MongoDBJDBC mongoClient = MongoDBJDBC.getInstance();
 	private Map<String, List> NLPmap = null;
 	private ExtractWord extractWord = null;
 	private AnsjStopWord getStopWordList = null;
@@ -102,18 +103,15 @@ public class LocalTermDaoImpl extends commonDaoImpl implements LocalTermDao{
 				@Override
 				public void apply(final Document document){
 					String source = document.getString("name_en");
-					//JSONObject idObj = (JSONObject)document.get("_id");
-			        //String strID = (String) idObj.get("$oid");
-					//TransInfo trans = new TransInfo();
 					LocalTerm lt = new LocalTerm();
 					lt.setName_en(source);
 					//List<String> stringList = mongoClient.searchData("TranslationLog", "{\"name_en\":\""+source+"\"}");
-					List<String> stringList = mongoClient.searchData("TranslationLog", lt.TermToJson());
+					List<Document> stringList = mongoClient.searchData("TranslationLog", lt.TermToJson());
 					String zh = null;
 					if (stringList != null){
-						String termString = stringList.get(0);
+						String termString = stringList.get(0).toJson();
 						for(int i = 1; i < stringList.size(); i++){
-							mongoClient.deleteData("TranslationLog", stringList.get(i));
+							mongoClient.deleteData("TranslationLog", stringList.get(i).toJson());
 						}
 						//System.out.println(termString);
 						zh = TransInfo.LocalTerm(termString).getName_zh();
@@ -128,6 +126,10 @@ public class LocalTermDaoImpl extends commonDaoImpl implements LocalTermDao{
 						boolean isUpdated = mongoClient.updateData(CollectionName, lt.TermToJson(), "name_zh", zh);
 						mongoClient.updateData("TranslationLog", lt.TermToJson(), "name_zh", zh);
 						//System.out.println(isUpdated);
+					}
+					else{
+						String toWrite = "~~~~~English:" + source + "\n";
+						TxtOperation.writeToFile("data/FailToTranslate.txt", toWrite, "append");
 					}
 				}
 			});
@@ -185,7 +187,7 @@ public class LocalTermDaoImpl extends commonDaoImpl implements LocalTermDao{
 		return res;
 	}
 	public void insertStem(String CollectionName, LocalTerm queryString){
-		/*extractWord = new ExtractWord();
+		extractWord = new ExtractWord();
         getStopWordList = new AnsjStopWord();
         mongoClient = MongoDBJDBC.getInstance();
 		try {
@@ -193,7 +195,7 @@ public class LocalTermDaoImpl extends commonDaoImpl implements LocalTermDao{
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}*/
+		}
        try {
 			String name_en = queryString.getName_en();
 			String name_zh = queryString.getName_zh();
@@ -234,5 +236,43 @@ public class LocalTermDaoImpl extends commonDaoImpl implements LocalTermDao{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public List<SourceInfo> getSourceInfo(LocalTerm lt){
+		List<SourceInfo> sourceInfoList = new ArrayList<SourceInfo>();
+		if(lt.getSource() != null && lt.getSource().size() > 0)
+			return lt.getSource();
+		else{
+			if(lt.getName_en() != null){
+				List<Object> source = mongoClient.searchData("SNOMEDCT", lt.TermToJson(), "source");
+				//List<Object> source = mongoClient.searchData("SNOMEDCT", "{\"name_en\":/Microsporidia/}", "source");
+				for(Object obj: source){
+					List<Document> list = (List<Document>)obj;
+					Document sourceDoc = list.get(0);
+					System.out.println(sourceDoc.toJson());
+					sourceInfoList.add(SourceInfo.JsonToTerm(sourceDoc.toJson()));
+				}
+			}
+		}
+		return sourceInfoList;
+	}
+	public LocalTerm getLocalTermInfo(LocalTerm lt){
+		LocalTerm result = new LocalTerm();
+		String collectionName = null;
+		if(lt != null && lt.getSource()!=null && lt.getSource().size() > 0)
+			collectionName = lt.getSource().get(0).getSourceName();
+		else
+			return null;
+		String query = "{\"source.sourceName\":\"" + lt.getSource().get(0).getSourceName().replace("\"", "\\\"")+"\",\"source.sourceCode\":\"" + lt.getSource().get(0).getSourceCode()+"\"}";
+		List<Document> ltStringList = mongoClient.searchData(collectionName, query);
+		if(ltStringList == null)
+			return result;
+		for(Document doc:ltStringList){
+			result = new LocalTerm();
+			result.set_id(doc.getObjectId("_id").toString());
+			result.setName_en(doc.getString("name_en"));
+			result.setName_zh(doc.getString("name_zh"));
+			break;
+		}
+		return result;
 	}
 }

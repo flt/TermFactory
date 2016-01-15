@@ -17,6 +17,15 @@ public class LocalTerm {
 	private List<String> parentList = null;
 	private List<String> subList = null;
 	private List<String> synonym = null;
+	private List<LocalTerm> mapping = null;
+	public List<LocalTerm> getMapping() {
+		return mapping;
+	}
+
+	public void setMapping(List<LocalTerm> mapping) {
+		this.mapping = mapping;
+	}
+
 	private String cui = null;
 	private String _id = null;
 	
@@ -77,6 +86,13 @@ public class LocalTerm {
 			this.subList = new ArrayList<String>();
 		}
 		this.parentList.addAll(subList);
+	}
+	
+	public void addSubList(String subList) {
+		if (this.subList == null){
+			this.subList = new ArrayList<String>();
+		}
+		this.parentList.add(subList);
 	}
 
 	public LocalTerm(String name_en, String name_zh){
@@ -177,7 +193,7 @@ public class LocalTerm {
 		String documentString = "";
 		Gson gson = new Gson();
 		documentString = gson.toJson(this);
-		System.out.println(documentString);
+		//System.out.println(documentString);
 		return documentString;
 	}
 	

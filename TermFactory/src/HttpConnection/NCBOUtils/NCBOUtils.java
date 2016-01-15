@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bson.Document;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -136,6 +137,7 @@ public class NCBOUtils {
     	MongoDBJDBC mongo = new MongoDBJDBC();
     	mongo.createConnection("localhost", 27017, null, null);
         // Get the classes list
+    	//curPage = "1036";
         for(int i = Integer.parseInt(curPage); i <= Integer.parseInt(totalPage); i++){
         	System.out.println(i);
         	JsonNode classesContent = jsonToNode(get(ontologyURL + "/classes?page=" + i)).get("collection");
@@ -145,9 +147,10 @@ public class NCBOUtils {
         		String code = classContent.get("@id").asText();
         		code = code.substring(code.lastIndexOf("/") + 1);
         		LocalTerm lt = new LocalTerm(classContent.get("prefLabel").asText(), null);
-        		List<String> result = mongo.searchData(ontologyName, lt.TermToJson());
+        		List<Document> result = mongo.searchData(ontologyName, lt.TermToJson());
         		if (result != null)
         			continue;
+        		System.out.println("new term");
         		lt.addSource(ontologyName, code, classContent.get("@id").asText(), "bioPoratl");
         		mongo.insertData(ontologyName, lt.TermToJson());
         		sum += 1;
@@ -172,8 +175,8 @@ public class NCBOUtils {
     		System.out.println(i);
     		JsonNode classesContent = jsonToNode(get(sublink + "?page=" + i)).get("collection");
     		for(JsonNode classContent: classesContent){
-    			System.out.println(classContent.get("prefLabel").asText());
-    			System.out.println(classContent.get("@id").asText());
+    			//System.out.println(classContent.get("prefLabel").asText());
+    			//System.out.println(classContent.get("@id").asText());
     			classNodeList.add(classContent);
     		}
     	}
@@ -264,7 +267,9 @@ public class NCBOUtils {
     	
     	//List<JsonNode> classList = NCBOUtils.listClassesInOntology("http://data.bioontology.org/ontologies/ICD10");
     	//String classURL = classList.get(0).get("@id").asText();
+    	//String classURL = "http://purl.bioontology.org/ontology/SNOMEDCT/439401001";
     	//List<JsonNode> subList = NCBOUtils.listSubClasses(classURL);
+    	//System.out.println(subList.size());
     	//List<JsonNode> parList = NCBOUtils.listParentClasses(classURL);
     }
 }

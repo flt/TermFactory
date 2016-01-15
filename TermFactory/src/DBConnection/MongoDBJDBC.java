@@ -133,6 +133,18 @@ public class MongoDBJDBC {
 		return flag;
 	}
 	
+	public boolean updateDataByField(String collectionName, String conditionDocumentString, Document updateDocument){
+		boolean flag = true;
+		Document queryDoc = new Document();
+		queryDoc.put("$set", updateDocument);
+		UpdateResult ur = db.getCollection(collectionName).updateOne(Document.parse(conditionDocumentString), queryDoc);
+		if(ur.getModifiedCount() >= 1)
+			flag = true;
+		else
+			flag = false;
+		return flag;
+	}
+	
 	/*public boolean updateData(String collectionName, String conditionDocumentString, String key, List<String> value){
 		boolean flag = true;
 		UpdateResult ur = db.getCollection(collectionName).updateMany(Document.parse(conditionDocumentString), new Document("$set", new Document(key, value)));
@@ -172,16 +184,16 @@ public class MongoDBJDBC {
 		return doc.toJson();
 	}
 	
-	public List<String> searchData(String collectionName, String DocumentString){
-		List<String> relatedDocument = new ArrayList<String>();
+	public List<Document> searchData(String collectionName, String DocumentString){
+		List<Document> relatedDocument = new ArrayList<Document>();
 		Document queryData;
 		try{
 			queryData = Document.parse(DocumentString);
 		}catch(JsonParseException jpe){
 			System.out.println(jpe.getMessage());
 			System.out.println("ERROR!!!" + DocumentString);
-			String toWrite = "~~~~~Wrong document:" + DocumentString + "\n";
-			TxtOperation.writeToFile("data/ErrorLog/TranslationErrorEn.txt", toWrite, "append");
+			//String toWrite = "~~~~~Wrong document:" + DocumentString + "\n";
+			//TxtOperation.writeToFile("data/ErrorLog/TranslationErrorEn.txt", toWrite, "append");
 			return null;
 		}
 		FindIterable<Document> iterable = db.getCollection(collectionName).find(queryData);
@@ -189,7 +201,7 @@ public class MongoDBJDBC {
 			@Override
 			public void apply(final Document document){
 				//System.out.println(document);
-				relatedDocument.add(document.toJson());
+				relatedDocument.add(document);
 			}
 		});
 		if (relatedDocument.size() != 0)
