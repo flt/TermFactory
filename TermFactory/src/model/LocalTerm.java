@@ -18,10 +18,38 @@ public class LocalTerm {
 	private List<String> subList = null;
 	private List<String> synonym = null;
 	private List<LocalTerm> mapping = null;
+	private String inuse = null;
+	public String getInuse() {
+		return inuse;
+	}
+
+	public void setInuse(String inuse) {
+		this.inuse = inuse;
+	}
+
 	public List<LocalTerm> getMapping() {
 		return mapping;
 	}
 
+	public LocalTerm(LocalTerm lt){
+		this.name_en = lt.name_en;
+		this.name_zh = lt.name_zh;
+		this.source = lt.source;
+		this.tags = lt.tags;
+		this.stem_en = lt.stem_en;
+		this.stem_zh = lt.stem_zh;
+		this.localCode = lt.localCode;
+		this.parentList = lt.parentList;
+		this.subList = lt.subList;
+		this.synonym = lt.synonym;
+		this.mapping = lt.mapping;
+		this.inuse = lt.inuse;
+	}
+	
+	public void deleteTerm(){
+		this.setInuse("0");
+	}
+	
 	public void setMapping(List<LocalTerm> mapping) {
 		this.mapping = mapping;
 	}

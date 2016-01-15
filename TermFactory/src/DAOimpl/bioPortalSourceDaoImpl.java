@@ -37,6 +37,8 @@ public class bioPortalSourceDaoImpl extends commonDaoImpl implements bioPortalSo
 		for(SourceInfo s:sourceList){
 			String termLink = s.getSourceLink();
 			List<JsonNode> nodes = NCBOUtils.listSubClasses(termLink);
+			if(nodes == null)
+				return subList;
 			for(JsonNode node: nodes){
 				subList.add(fromJsonNode(node));
 			}

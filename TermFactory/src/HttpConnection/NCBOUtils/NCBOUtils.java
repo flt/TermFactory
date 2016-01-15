@@ -55,7 +55,10 @@ public class NCBOUtils {
                 result += line;
             }
             rd.close();
-        } catch (Exception e) {
+        }catch(IOException ioe){
+        	ioe.printStackTrace();
+        	return null;
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return result;
@@ -64,6 +67,8 @@ public class NCBOUtils {
     public static Map<String, String> listOntologies() {
         // Get the available resources
         String resourcesString = get(REST_URL + "/");
+        if(resourcesString == null)
+        	return null;
         JsonNode resources = jsonToNode(resourcesString);
 
         // Follow the ontologies link by looking for the media type in the list of links
@@ -89,6 +94,8 @@ public class NCBOUtils {
 
     public static List<JsonNode> listClassesInOntology(String ontologyURL) {
     	String resourcesString = get(ontologyURL);
+    	if(resourcesString == null)
+    		return null;
         JsonNode resources = jsonToNode(resourcesString);
 
         // Follow the ontologies link by looking for the media type in the list of links
@@ -119,6 +126,8 @@ public class NCBOUtils {
     
     public static int insertClassesInOntology(String ontologyURL) {
     	String resourcesString = get(ontologyURL);
+    	if(resourcesString == null)
+    		return 0;
         JsonNode resources = jsonToNode(resourcesString);
 
         // Follow the ontologies link by looking for the media type in the list of links
@@ -161,6 +170,8 @@ public class NCBOUtils {
     
     public static List<JsonNode> listSubClasses(String classURL){
     	String resourcesString = get(classURL);
+    	if(resourcesString == null)
+    		return null;
     	JsonNode resources = jsonToNode(resourcesString);
     	String sublink = resources.get("links").findValue("children").asText();
     	//Get the children from sublink
@@ -249,7 +260,8 @@ public class NCBOUtils {
     }
     
     public static JsonNode searchClass(String term){
-    	JsonNode searchResult = jsonToNode(get(REST_URL + "search?q=" + term)).get("collection");
+    	String responseString = get(REST_URL + "search?q=" + term);
+    	JsonNode searchResult = jsonToNode(responseString).get("collection");
     	if(searchResult == null){
     		return null;
     	}
