@@ -173,6 +173,8 @@ public class NCBOUtils {
     	if(resourcesString == null)
     		return null;
     	JsonNode resources = jsonToNode(resourcesString);
+    	if(resources.get("status") != null)
+    		return null;
     	String sublink = resources.get("links").findValue("children").asText();
     	//Get the children from sublink
     	JsonNode subClassPage = jsonToNode(get(sublink));
@@ -197,7 +199,11 @@ public class NCBOUtils {
     
     public static List<JsonNode> listParentClasses(String classURL){
     	String resourcesString = get(classURL);
+    	if(resourcesString == null || resourcesString.length() == 0)
+    		return null;
     	JsonNode resources = jsonToNode(resourcesString);
+    	if(resources.get("status") != null)
+    		return null;
     	String parlink = resources.get("links").findValue("parents").asText();
     	//Get the children from sublink
     	JsonNode parClassPage = jsonToNode(get(parlink));
@@ -211,12 +217,12 @@ public class NCBOUtils {
     		System.out.println(i);
     		JsonNode classesContent = jsonToNode(get(parlink + "?page=" + i)).get("collection");
     		for(JsonNode classContent: classesContent){
-    			System.out.println(classContent.get("prefLabel").asText());
-    			System.out.println(classContent.get("@id").asText());
+    			//System.out.println(classContent.get("prefLabel").asText());
+    			//System.out.println(classContent.get("@id").asText());
     			classNodeList.add(classContent);
     		}
     	}
-    	System.out.println(classNodeList.size());
+    	//System.out.println(classNodeList.size());
         return classNodeList;
     }
     
